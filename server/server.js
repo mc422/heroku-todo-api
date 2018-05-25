@@ -1,9 +1,10 @@
 const _ = require('lodash');
 const express = require('express');
+const hbs = require('hbs');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
 
-require('./config/config')
+require('./config/config');
 var {mongoose} = require('./db/mongoose');
 var {Todo} = require('./models/todo');
 var {User} = require('./models/user');
@@ -11,7 +12,14 @@ var {User} = require('./models/user');
 const port = process.env.PORT;
 
 var app = express();
+app.set('view engine', 'hbs');
+app.set('views', __dirname + '/views');
 app.use(bodyParser.json());
+
+
+app.get('/', (req, res) => {
+  res.render('home.hbs');
+});
 
 app.post('/todos', (req, res) => {
   var todo = new Todo({
